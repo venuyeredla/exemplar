@@ -1,4 +1,4 @@
-package com.exemplar.exemplar.config;
+package com.exemplar.config;
 
 import org.springframework.context.annotation.Configuration;
 

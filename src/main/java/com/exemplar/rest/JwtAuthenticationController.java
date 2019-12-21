@@ -1,11 +1,12 @@
-package com.exemplar.exemplar.rest;
+package com.exemplar.rest;
 
 
-import com.exemplar.exemplar.entity.AppUser;
-import com.exemplar.exemplar.jwt.JwtRequest;
-import com.exemplar.exemplar.jwt.JwtResponse;
-import com.exemplar.exemplar.jwt.JwtTokenUtil;
-import com.exemplar.exemplar.jwt.JwtUserDetailsService;
+import com.exemplar.entity.AppUser;
+import com.exemplar.jwt.JwtRequest;
+import com.exemplar.jwt.JwtResponse;
+import com.exemplar.jwt.JwtTokenUtil;
+import com.exemplar.jwt.JwtUserDetailsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

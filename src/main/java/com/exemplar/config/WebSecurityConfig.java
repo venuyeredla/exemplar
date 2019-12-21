@@ -1,7 +1,5 @@
-package com.exemplar.exemplar.config;
+package com.exemplar.config;
 
-import com.exemplar.exemplar.jwt.JwtAuthenticationEntryPoint;
-import com.exemplar.exemplar.jwt.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -15,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.exemplar.jwt.JwtAuthenticationEntryPoint;
+import com.exemplar.jwt.JwtRequestFilter;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

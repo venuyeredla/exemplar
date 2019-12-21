@@ -1,4 +1,4 @@
-package com.exemplar.exemplar.jwt;
+package com.exemplar.jwt;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
