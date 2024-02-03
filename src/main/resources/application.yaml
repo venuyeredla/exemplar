@@ -5,6 +5,8 @@ server:
 
 jwt :
   secret : javainuse
+enable:
+  kafka: false
 
 spring:
 logging:
@@ -17,6 +19,10 @@ logging:
 ---
 spring:
   profiles: dev
+    
+  kafka:
+    bootstrap-servers: localhost:9092
+
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:file:./data/app
@@ -30,3 +36,6 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.H2Dialect
+  integration:
+    jdbc:
+      initialize-schema: always
