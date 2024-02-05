@@ -1,15 +1,18 @@
 package com.exemplar.kafka;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.PartitionOffset;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFuture;
 
 
 @Service
@@ -31,7 +34,7 @@ public class EventDriverService {
 	
 	
 	public void sendMessageWithCallBack(String message) {
-	     ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topicName, message);
+	   CompletableFuture<SendResult<String, String>> send = kafkaTemplate.send(topicName, message);
 	   /*  future.whenComplete((result, ex) -> {
 	         if (ex == null) {
 	             System.out.println("Sent message=[" + message + 
@@ -77,7 +80,7 @@ public class EventDriverService {
 			  containerFactory = "partitionsKafkaListenerContainerFactory")
 			public void listenToPartition(
 			  @Payload String message, 
-			  @Header(KafkaHeaders.PARTITION) int partition) {
+			  @Header(KafkaHeaders.ACKNOWLEDGMENT) int partition) {
 			      System.out.println(
 			        "Received Message: " + message+ "from partition: " + partition);
 			}

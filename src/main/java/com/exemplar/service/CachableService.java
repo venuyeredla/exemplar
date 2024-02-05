@@ -3,7 +3,7 @@ package com.exemplar.service;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.pilot.jpa.ItemRepository;
+import com.exemplar.jpa.ItemRepository;
 
 @Service
 public class CachableService {

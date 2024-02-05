@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pilot.entity.Item;
-import com.pilot.service.ItemService;
+import com.exemplar.entity.Item;
+import com.exemplar.service.ItemService;
 
 @RestController
 @RequestMapping("/api")

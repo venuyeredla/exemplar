@@ -6,3 +6,17 @@ database: h2
     hibernate:
       ddl-auto: update
     show-sql: true
+    
+    
+    
+    #first db
+spring.datasource.url = [url]
+spring.datasource.username = [username]
+spring.datasource.password = [password]
+spring.datasource.driverClassName = oracle.jdbc.OracleDriver
+
+#second db ...
+spring.secondDatasource.url = [url]
+spring.secondDatasource.username = [username]
+spring.secondDatasource.password = [password]
+spring.secondDatasource.driverClassName = oracle.jdbc.OracleDriver

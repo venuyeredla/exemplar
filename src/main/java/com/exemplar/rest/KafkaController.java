@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pilot.eventdriven.EventDriverService;
+import com.exemplar.kafka.EventDriverService;
 
 @RestController
 @ConditionalOnProperty(havingValue = "true",name = "enable.kafka")

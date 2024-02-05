@@ -2,14 +2,16 @@ package com.exemplar.service;
 
 
 import java.util.Optional;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.support.locks.LockRegistry;
 import org.springframework.stereotype.Service;
 
-import com.exemplar.*;
 import com.exemplar.jpa.ItemRepository;
+
+import com.exemplar.entity.Item;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,11 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ItemService {
 	
-	@Autowired
+		@Autowired
 	 	private ItemRepository itemRepository;
 	    private  ReentrantLock rlock = new ReentrantLock();
 	    
-
+	    @Autowired
+	    private  LockRegistry lockRegistry;
 	  //  private JdbcTemplate jdbcTemplate;
 	    
 	    
@@ -29,11 +32,11 @@ public class ItemService {
 	       boolean lockAquired =  rlock.tryLock();
 	       if(lockAquired){
 	           try{
-	              // log.info("lock taken");
-	               Optional<Item> account = itemRepository.findById(id);
+	               log.info("lock taken");
+	               Optional<Item> item = itemRepository.findById(id);
 	             //  account.setBalance(account.getBalance() + 100L);
 	               Thread.sleep(20_000);
-	               itemRepository.save(account.get());
+	               itemRepository.save(item.get());
 	           }
 	           finally {
 	               rlock.unlock();
@@ -43,12 +46,11 @@ public class ItemService {
 	    
 	   
 
-	    @Autowired
-	    private  LockRegistry lockRegistry;
+
 
 	    public void updateAccountViaDistributedLocks(Long id) throws InterruptedException {
-	        var lock = lockRegistry.obtain(String.valueOf(id));
-	        boolean lockAquired =  lock.tryLock();
+	    	Lock obtain = lockRegistry.obtain(String.valueOf(id));
+	        boolean lockAquired =  obtain.tryLock();
 	        if(lockAquired){
 	            try{
 	               // log.info("lock taken");
@@ -59,7 +61,7 @@ public class ItemService {
 	                itemRepository.save(account.get());
 	            }
 	            finally {
-	                lock.unlock();
+	            	obtain.unlock();
 	            }
 	        }
 	    }
