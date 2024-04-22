@@ -29,14 +29,10 @@ public class RedisService {
 	@Test
 	public void testRedis() {
 		
-		
-		
-		
 		JedisPool jedisPool= new JedisPool(new JedisPoolConfig(), "vdpsidxtst04",6379 , 3000, "change1t",9);
-		
+	
 		JedisConnectionFactory jFac=new JedisConnectionFactory(new JedisPoolConfig());
 		
-
 		
 		  try (Jedis jedis = jedisPool.getResource()) {
 

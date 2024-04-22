@@ -22,11 +22,14 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
 @Configuration
-@ConditionalOnProperty(havingValue = "true",name = "enable.kafka")
+@ConditionalOnProperty(havingValue = "true",name = "kafka.enable")
 public class KafkaConfig {
 
 		@Value(value = "${spring.kafka.bootstrap-servers}")
 	    private String bootstrapAddress;
+		
+		@Value(value = "${kafka.topic}")
+	    private String kafkaTopic;
 		
 	    private Object groupId;
 
@@ -40,20 +43,15 @@ public class KafkaConfig {
 	   
 	    @Bean
 	    public NewTopic topic1() {
-	         return new NewTopic("pilot", 1, (short) 1);
+	         return new NewTopic(kafkaTopic, 1, (short) 1);
 	    }
 	    
 	    @Bean
 	    public ProducerFactory<String, String> producerFactory() {
 	        Map<String, Object> configProps = new HashMap<>();
-	        configProps.put(
-	          ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-	        configProps.put(
-	          ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, 
-	          StringSerializer.class);
-	        configProps.put(
-	          ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, 
-	          StringSerializer.class);
+	        configProps.put( ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+	        configProps.put( ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+	        configProps.put( ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 	        return new DefaultKafkaProducerFactory<>(configProps);
 	    }
 
@@ -62,26 +60,21 @@ public class KafkaConfig {
 	        return new KafkaTemplate<>(producerFactory());
 	    }
 	    
-	   // @Bean
+	    @Bean
 	    public ConsumerFactory<String, String> consumerFactory() {
 	        Map<String, Object> props = new HashMap<>();
 	        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-	        props.put(
-	          ConsumerConfig.GROUP_ID_CONFIG, groupId);
-	        props.put(
-	          ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, 
-	          StringDeserializer.class);
-	        props.put(
-	          ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, 
-	          StringDeserializer.class);
+	        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+	        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+	        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,  StringDeserializer.class);
+	
 	        return new DefaultKafkaConsumerFactory<>(props);
 	    }
 
-	   // @Bean
-	    public ConcurrentKafkaListenerContainerFactory<String, String> 
-	      kafkaListenerContainerFactory() {
-	        ConcurrentKafkaListenerContainerFactory<String, String> factory =
-	          new ConcurrentKafkaListenerContainerFactory<>();
+	    @Bean
+	    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+	      
+	        ConcurrentKafkaListenerContainerFactory<String, String> factory =  new ConcurrentKafkaListenerContainerFactory<>();
 	        factory.setConsumerFactory(consumerFactory());
 	        return factory;
 	    }

@@ -1,15 +1,19 @@
 server:
-  port: 2020
+  port: 2024
   servlet:
     context-path: /app
 
-jwt :
-  secret : javainuse
-enable:
-  kafka: false
+security : 
+  jwt : 
+    secret-key : 6749577c76efb0cf8a90983cf0972f62082445c10be1250a4aeb09ac5c25b2f3
+    expiration-time : 3600000
+
+kafka: 
+  enable: false
+  topic: example
 
 spring:
-logging:
+  logging:
   level:
     org.springframework.web: INFO
     guru.springframework.controllers: INFO
@@ -17,8 +21,11 @@ logging:
 
 
 ---
+
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile : dev
     
   kafka:
     bootstrap-servers: localhost:9092
@@ -28,11 +35,13 @@ spring:
     url: jdbc:h2:file:./data/app
     username: sa
     password: sa
+    
   h2:
     console:
       enabled: true
       path: /h2-console
-  jpa :
+      
+  jpa:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.H2Dialect
@@ -41,9 +50,9 @@ spring:
     jdbc:
       initialize-schema: always
             
-  redis:
-    database : 0
-    host : localhost
-    port : 16379
-    password : mypass
-    timeout : 60000
+redis :
+   database : 0
+   host : localhost
+   port : 16379
+   password : mypass
+   timeout : 60000
