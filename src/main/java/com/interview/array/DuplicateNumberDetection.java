@@ -1,8 +1,6 @@
 package com.interview.array;
 
 /**
- * Date 03/04/2016
- * @author Tushar Roy
  *
  * Given an array of size n + 1 with elements from 1 to n. One element is duplicated mulitiple times.
  * Find that element in O(1) space. Array cannot be changed.
@@ -15,7 +13,7 @@ public class DuplicateNumberDetection {
         if (nums.length == 0 || nums.length == 1) {
             return -1;
         }
-
+        
         int slow = nums[0];
         int fast = nums[nums[0]];
         while (slow != fast) {

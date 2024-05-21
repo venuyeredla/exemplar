@@ -28,8 +28,6 @@ public class Item {
 	public void setBalance(Long balance) {
 		this.balance = balance;
 	}
-    
-    
-    
+
 
 }

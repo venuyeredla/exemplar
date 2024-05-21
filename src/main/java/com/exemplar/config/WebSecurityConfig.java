@@ -11,18 +11,23 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.exemplar.security.JwtAuthenticationFilter;
+import com.exemplar.config.security.JwtAuthenticationEntryPoint;
+import com.exemplar.config.security.JwtAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity // Mandatory to turn off default security configuration
 public class WebSecurityConfig {
 	
-	   private static final String[] WHITE_LIST_URL = {"/auth/**", "/api/**",
-			   "/h2-console/**",
+	   private static final String[] WHITE_LIST_URL = {
+			   "/",
+			   "/unauthorized",
+			   "/v1/auth/**",
+			   
 	            "/v2/api-docs",
 	            "/v3/api-docs",
 	            "/v3/api-docs/**",
@@ -37,23 +42,37 @@ public class WebSecurityConfig {
 
 	private final AuthenticationProvider authenticationProvider;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-	public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider) {
+	public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider,JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
 		this.authenticationProvider = authenticationProvider;
 		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+		this.jwtAuthenticationEntryPoint=jwtAuthenticationEntryPoint;
 	}
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf(AbstractHttpConfigurer::disable)
+		httpSecurity.csrf(csrf ->{
+			csrf
+			.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).disable();
+		}).headers(headers->{
+			headers.frameOptions().disable();
+		})
 					.authorizeHttpRequests(auth -> 
 							auth.requestMatchers(WHITE_LIST_URL).permitAll()
-							//.requestMatchers("/auth/**").permitAll()
+							.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
 							.anyRequest().authenticated()
 						)
+					.exceptionHandling(exceptionHandler ->{
+						//exceptionHandler.accessDeniedPage("/unauthorized");
+						//exceptionHandler.accessDeniedHandler(null);
+					    exceptionHandler.authenticationEntryPoint(jwtAuthenticationEntryPoint);
+					})
+					
 					.sessionManagement(sessManage -> sessManage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-					.authenticationProvider(authenticationProvider)
+					//.authenticationProvider(authenticationProvider)
 					.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+				
 			      /*  .logout.logoutUrl("/auth/logout")
 			        .logout(logout ->
 			         	logout.logoutUrl("/api/v1/auth/logout")
@@ -63,6 +82,10 @@ public class WebSecurityConfig {
 				*/
 		return httpSecurity.build();
 	}
+
+	   
+	  
+	
 
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {

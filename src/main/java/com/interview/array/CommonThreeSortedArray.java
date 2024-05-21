@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Date 01/01/2016
- * @author Tushar Roy
- *
  * Given 3 sorted array find common elements in these 3 sorted array.
  *
  * Time complexity is O(m + n + k)

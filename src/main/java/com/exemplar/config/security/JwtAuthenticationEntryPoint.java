@@ -1,6 +1,7 @@
-package com.exemplar.security;
+package com.exemplar.config.security;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 
 import org.springframework.security.core.AuthenticationException;
@@ -17,6 +18,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+     //   response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized No token");
+    	response.setStatus(401);
+    	PrintWriter writer = response.getWriter();
+    	writer.write(" Unauthrized request");
+    	writer.flush();
+ 
+      //  response.sendRedirect("/app/unauthorized");
     }
 }

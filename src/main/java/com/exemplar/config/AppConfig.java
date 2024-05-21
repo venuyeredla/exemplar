@@ -55,7 +55,6 @@ public class AppConfig {
 	 
 	 jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=tcp)(HOST=RAC1)(PORT=1521))(ADDRESS=(PROTOCOL=tcp)(HOST=RAC2)(PORT=1521))...) (CONNECT_DATA=(SERVICE_NAME=myServiceName)))
 	 
-	 
 	 */
 	
 	@Bean

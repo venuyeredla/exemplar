@@ -38,12 +38,18 @@ public class KafkaConfig {
 	        Map<String, Object> configs = new HashMap<>();
 	        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 	        KafkaAdmin kafkaAdmin = new KafkaAdmin(configs);
+	        
+	      //  Map<String, TopicDescription> describeTopics = kafkaAdmin.describeTopics("topic1", "topic2");
+	      //  Map<String, Object> configurationProperties = kafkaAdmin.getConfigurationProperties();
+	      //  kafkaAdmin.setAutoCreate(false);
 	        return kafkaAdmin;
 	    }
 	   
 	    @Bean
 	    public NewTopic topic1() {
-	         return new NewTopic(kafkaTopic, 1, (short) 1);
+	    	
+	    	 NewTopic newTopic = new NewTopic(kafkaTopic, 1, (short) 1);	    	
+	         return newTopic;
 	    }
 	    
 	    @Bean
@@ -73,7 +79,6 @@ public class KafkaConfig {
 
 	    @Bean
 	    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
-	      
 	        ConcurrentKafkaListenerContainerFactory<String, String> factory =  new ConcurrentKafkaListenerContainerFactory<>();
 	        factory.setConsumerFactory(consumerFactory());
 	        return factory;

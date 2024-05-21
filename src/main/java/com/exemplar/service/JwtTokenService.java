@@ -1,4 +1,4 @@
-package com.exemplar.security;
+package com.exemplar.service;
 
 import java.io.Serializable;
 import java.security.Key;

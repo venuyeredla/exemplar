@@ -12,16 +12,18 @@ import com.exemplar.entity.Item;
 import com.exemplar.service.ItemService;
 
 @RestController
-@RequestMapping("/api")
-public class AppController {
+@RequestMapping("/v1/item")
+public class ItemController {
 	
     @Autowired
 	private ItemService itemService;
-	
-	@GetMapping("/me")
-	public String root() {
-		return "Exemplar Application";
+    
+    
+    @GetMapping
+	public Item getDummy() {
+		return new Item();
 	}
+    
 	
 	@PostMapping("/save")
 	public String save(@RequestBody Item item) {
@@ -46,6 +48,5 @@ public class AppController {
 		// return itemService.get(id);
 		return new Item();
 	}
-	
 
 }

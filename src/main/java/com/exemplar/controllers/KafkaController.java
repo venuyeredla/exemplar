@@ -5,20 +5,20 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.exemplar.kafka.KafkaService;
+import com.exemplar.kafka.AsyncProducer;
 
 @RestController
 @ConditionalOnProperty(havingValue = "true",name = "enable.kafka")
 public class KafkaController {
 	
 	@Autowired
-	private KafkaService kafkaService;
+	private AsyncProducer asyncProducer;
 	
 	@GetMapping("/postk")
 	public boolean post() {
 		// return itemService.get(id);
 		
-		kafkaService.postMessage(null);
+		asyncProducer.postMessage("");
 		
 		return true;
 	}

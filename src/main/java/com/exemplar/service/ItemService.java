@@ -1,6 +1,7 @@
 package com.exemplar.service;
 
 
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -8,6 +9,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.support.locks.LockRegistry;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.exemplar.jpa.ItemRepository;
 
@@ -46,8 +49,7 @@ public class ItemService {
 	    
 	   
 
-
-
+	    @Transactional (rollbackFor = SQLException.class,propagation = Propagation.REQUIRED)
 	    public void updateAccountViaDistributedLocks(Long id) throws InterruptedException {
 	    	Lock obtain = lockRegistry.obtain(String.valueOf(id));
 	        boolean lockAquired =  obtain.tryLock();
@@ -59,6 +61,7 @@ public class ItemService {
 	                //account.setBalance(account.getBalance() + 100L);
 	                Thread.sleep(20_000);
 	                itemRepository.save(account.get());
+	                xyz();
 	            }
 	            finally {
 	            	obtain.unlock();
@@ -77,5 +80,9 @@ public class ItemService {
 		}
 
 
+		  @Transactional
+		public void xyz() {
+			
+		}
 
 }

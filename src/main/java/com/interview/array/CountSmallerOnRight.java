@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Date 03/01/2016
- * @author Tushar Roy
  *
  * Count number of smaller elements on right side of an array for every element.
  *
@@ -15,6 +13,7 @@ import java.util.List;
  * https://leetcode.com/problems/count-of-smaller-numbers-after-self/
  */
 public class CountSmallerOnRight {
+	
     static class NumberIndex {
         int val;
         int index;

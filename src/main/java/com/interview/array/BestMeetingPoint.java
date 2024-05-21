@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Date 03/24/2016
- * @author Tushar Roy
  *
  * A group of two or more people wants to meet and minimize the total travel distance.
  * You are given a 2D grid of values 0 or 1, where each 1 marks the home of someone in the group.

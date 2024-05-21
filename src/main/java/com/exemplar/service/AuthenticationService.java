@@ -1,7 +1,13 @@
 package com.exemplar.service;
 
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +16,11 @@ import com.exemplar.entity.User;
 import com.exemplar.jpa.UserRepository;
 
 @Service
-public class AuthenticationService {
+public class AuthenticationService{
 
+	 @Autowired
 	 private final UserRepository userRepository;
+	 
 	    
 	    private final PasswordEncoder passwordEncoder;
 	    
@@ -48,4 +56,5 @@ public class AuthenticationService {
 	        return userRepository.findByEmail(input.getEmail())
 	                .orElseThrow();
 	    }
+	    
 }

@@ -1,9 +1,11 @@
 package com.interview.multithreaded;
 
+import java.util.concurrent.locks.ReentrantLock;
 
 public class SharedData{
 	private String msg;
-	Lock  lock=new Lock();
+	
+	ReentrantLock  lock=new ReentrantLock();
 	
 
 	public SharedData(String string) {
@@ -11,22 +13,23 @@ public class SharedData{
 	}
 
 	public String getMsg() {
-		return msg;
+		
+		String response=null;
+		lock.lock();
+		response=msg;
+		lock.unlock();
+		
+		return response;
 	}
 
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
 	
-	public void Updatemsg(String newMsg) {
-		try {
-			lock.lock();
-			this.msg=newMsg;
-			lock.unlock();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public /*synchronized */ void Updatemsg(String newMsg) {
+		lock.lock();
+		this.msg=newMsg;
+		lock.unlock();
 		
 	}
 	

@@ -1,8 +1,6 @@
 package com.interview.array;
 
 /**
- * Date 12/29/15
- * @author Tushar Roy
  *
  * Given input array find number of inversions where i < j < k and input[i] > input[j] > input[k]
  *

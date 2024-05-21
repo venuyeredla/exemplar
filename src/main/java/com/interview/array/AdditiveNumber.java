@@ -1,11 +1,8 @@
 package com.interview.array;
 
 import java.math.BigInteger;
-import java.util.Arrays;
 
 /**
- * Date 04/24/2016
- * @author Tushar Roy
  *
  * Additive number is a string whose digits can form additive sequence.
  * A valid additive sequence should contain at least three numbers.
@@ -36,13 +33,6 @@ public class AdditiveNumber {
             }
         }
         return false;
-    }
-    
-    public void test() {
-    	int[] numbers=new int[10];
-    	Arrays.binarySearch(numbers, 10);
-    	Arrays.asList(numbers);
-    	Arrays.sort(numbers);    	
     }
     
 

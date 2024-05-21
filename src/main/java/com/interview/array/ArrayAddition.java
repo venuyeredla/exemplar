@@ -35,21 +35,6 @@ public class ArrayAddition {
         }
         return result;
     }
-    /**
-
-	9,9,9,9,9,9,9
-	  1,6,8,2,6,7
-	1 0 1 6 8 2 6 6
-     
-     */
-    public static void main(String args[]){
-        
-        int arr1[] = {9,9,9,9,9,9,9};
-        int arr2[] = {1,6,8,2,6,7};
-        ArrayAddition aa = new ArrayAddition();
-        int result[] = aa.add(arr1, arr2);
-        for(int i=0; i < result.length; i++){
-            System.out.print(" " + result[i]);
-        }
-    }
+    
+    
 }

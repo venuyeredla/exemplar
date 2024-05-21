@@ -10,6 +10,8 @@ import com.exemplar.entity.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer>{
 	
+	//@Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+	//@Query("SELECT c FROM Customer c WHERE c.orgId = ?1")
 	Optional<User> findByEmail(String email);
 
 

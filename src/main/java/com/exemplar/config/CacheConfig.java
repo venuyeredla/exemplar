@@ -41,19 +41,16 @@ public class CacheConfig {
 		 JedisPool pool = new JedisPool("localhost", 6379);
 		 try (Jedis jedis = pool.getResource()) {
 			  jedis.set("clientName", "Jedis");
-			  
 			  jedis.get("clientName");
 			  
 			}
 	 }
-	 
 	
 	@Bean
 	public RedisTemplate<Long, Book> redisTemplate(RedisConnectionFactory connectionFactory) {
 	    RedisTemplate<Long, Book> template = new RedisTemplate<>();
 	    template.setConnectionFactory(connectionFactory);
 	    // Add some specific configuration here. Key serializers, etc.
-	    
 	    
 	    template.opsForValue().set(null, null);
 	    template.delete(120L);
