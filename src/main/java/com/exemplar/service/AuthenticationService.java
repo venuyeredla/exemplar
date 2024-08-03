@@ -1,13 +1,8 @@
 package com.exemplar.service;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +15,7 @@ public class AuthenticationService{
 
 	 @Autowired
 	 private final UserRepository userRepository;
-	 
-	    
+
 	    private final PasswordEncoder passwordEncoder;
 	    
 	    private final AuthenticationManager authenticationManager;
@@ -38,7 +32,8 @@ public class AuthenticationService{
 
 	    public User signup(UserDto input) {
 	        User user = new User();
-	            user.setFullName(input.getFullName());
+	            user.setFirstName(input.getFirstName());
+	            user.setLastName(input.getLastName());
 	            user.setEmail(input.getEmail());
 	            user.setPassword(passwordEncoder.encode(input.getPassword()));
 	            
@@ -56,5 +51,10 @@ public class AuthenticationService{
 	        return userRepository.findByEmail(input.getEmail())
 	                .orElseThrow();
 	    }
+
+		public User getUserInfo(String userid) {
+			// TODO Auto-generated method stub
+			return userRepository.findByEmail("venugopal@ecom.com").get();
+		}
 	    
 }

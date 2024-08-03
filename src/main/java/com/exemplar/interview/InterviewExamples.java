@@ -43,9 +43,9 @@ public class InterviewExamples {
 		List<User> users=new ArrayList<>();
 		Set<User> usersSet=new HashSet();
 		
-		Collections.sort(users, (u1,u2) -> u1.getFullName().compareTo(u2.getEmail()) );
+		Collections.sort(users, (u1,u2) -> u1.getFirstName().compareTo(u2.getEmail()) );
 	
-		Collections.binarySearch(users, new User(), (u1,u2) -> u1.getFullName().compareTo(u2.getEmail()));
+		Collections.binarySearch(users, new User(), (u1,u2) -> u1.getFirstName().compareTo(u2.getEmail()));
 		
 		Collections.reverse(users);
 		

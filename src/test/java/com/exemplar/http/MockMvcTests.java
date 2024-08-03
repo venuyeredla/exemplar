@@ -21,6 +21,5 @@ public class MockMvcTests {
 	void shouldReturnDefaultMessage() throws Exception {
 		this.mockMvc.perform(get("/auth/test")).andDo(print()).andExpect(status().isOk());
 				//.andExpect(content().string(containsString("Hello, World")));
-			
 	}
 }

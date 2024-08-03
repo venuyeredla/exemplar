@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-        	 final String authHeader = request.getHeader("Authorization");
+        	 /*  final String authHeader = request.getHeader("Authorization");
              
              if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                filterChain.doFilter(request, response);
@@ -49,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
              	// handlerExceptionResolver.resolveException(request, response, null, new Exception("Authoriztion token doesn't exist"));
              }
         	// JWT Token is in the form "Bearer token". Remove Bearer word and get  only the Token
-            final String jwt = authHeader.substring(7);
+          final String jwt = authHeader.substring(7);
             final String userEmail = jwtService.extractUsername(jwt);
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -67,7 +67,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
-            }
+            } */
 
             filterChain.doFilter(request, response);
         } catch (Exception exception) {

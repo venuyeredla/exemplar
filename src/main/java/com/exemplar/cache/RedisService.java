@@ -1,50 +1,51 @@
 package com.exemplar.cache;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.exemplar.entity.RedisUser;
+
+@Service
 public class RedisService {
-	/*
-	
-	   @Qualifier
-	    @Autowired
-	    private ExpirableLockRegistry lockRegistry;
-
-	    public boolean update(String request) {
-	        Lock lock =  lockRegistry.obtain(request);
-	        boolean success = lock.tryLock();
-
-	        if (!success) {
-	            return false;
-	        }
-	        
-	        // ...
-	        // update a shared resource  
-	        // ... 
-	        
-	        lock.unlock();
-	        return true;
-	    }
 	
 	@Autowired
-	RedisRepo redisRepo;
-	
-	@Test
-	public void testRedis() {
-		
-		JedisPool jedisPool= new JedisPool(new JedisPoolConfig(), "vdpsidxtst04",6379 , 3000, "change1t",9);
-	
-		JedisConnectionFactory jFac=new JedisConnectionFactory(new JedisPoolConfig());
-		
-		
-		  try (Jedis jedis = jedisPool.getResource()) {
+	private UserRedisRepo  userRedisRepo;
 
-	            String customerPartyNumber = jedis.get("oid.pid.41279");
-
-	            System.out.println(customerPartyNumber);
-
-	        }
-		 
+	public void keepUserInCache(RedisUser user) {
+		userRedisRepo.save(user);
 	}
 	
-  */
+	public RedisUser getUserFromCache(String userid) {
+	  Optional<RedisUser> optional=	userRedisRepo.findById(userid);
+	  return optional.orElseGet(()->{return null;});
+	}
 }
 
 
+
+
+
+/*
+@Qualifier
+ @Autowired
+ private ExpirableLockRegistry lockRegistry;
+
+ public boolean update(String request) {
+     Lock lock =  lockRegistry.obtain(request);
+     boolean success = lock.tryLock();
+
+     if (!success) {
+         return false;
+     }
+     
+     // ...
+     // update a shared resource  
+     // ... 
+     
+     lock.unlock();
+     return true;
+ }
+
+*/

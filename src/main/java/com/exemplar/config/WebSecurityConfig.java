@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -27,6 +26,7 @@ public class WebSecurityConfig {
 			   "/",
 			   "/unauthorized",
 			   "/v1/auth/**",
+			   "/v1/user/**",
 			   
 	            "/v2/api-docs",
 	            "/v3/api-docs",
@@ -60,7 +60,6 @@ public class WebSecurityConfig {
 		})
 					.authorizeHttpRequests(auth -> 
 							auth.requestMatchers(WHITE_LIST_URL).permitAll()
-							.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
 							.anyRequest().authenticated()
 						)
 					.exceptionHandling(exceptionHandler ->{

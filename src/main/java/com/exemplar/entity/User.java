@@ -1,11 +1,10 @@
 package com.exemplar.entity;
 
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.redis.core.RedisHash;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,11 +17,11 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Table(name = "USERS")
+@Table(name = "ecom_user")
 @Entity
 @Setter
 @Getter
-public class User implements UserDetails{
+public class User implements UserDetails, Serializable{
 	
     private static final long serialVersionUID = 1L;
 
@@ -31,15 +30,20 @@ public class User implements UserDetails{
     @Column(nullable = false)
     private Integer id;
 
-    @Column(nullable = false)
-    private String fullName;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+    
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
 
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name="pwd",nullable = false)
     private String password;
 
+    /*
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;
@@ -47,7 +51,7 @@ public class User implements UserDetails{
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
-    
+    */
     public User() {
 		// TODO Auto-generated constructor stub
 	}

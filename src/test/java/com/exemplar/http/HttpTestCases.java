@@ -23,5 +23,4 @@ public class HttpTestCases {
 		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/app/auth/test", String.class))
 				.contains("Exemplar Application");
 	}
-
 }
