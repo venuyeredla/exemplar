@@ -1,7 +1,7 @@
 server:
   port: 2024
   servlet:
-    context-path: /app
+    context-path: /api
     
 
 security : 
@@ -9,9 +9,12 @@ security :
     secret-key : 6749577c76efb0cf8a90983cf0972f62082445c10be1250a4aeb09ac5c25b2f3
     expiration-time : 3600
 
+
+
+
 kafka: 
-  enable: false
-  topic: example
+  enable: true
+  topic: ecomtopic
 
 spring:
   application:
@@ -19,12 +22,10 @@ spring:
   profiles:
     active:
     - dev
-  logging:
-  level:
-    org.springframework.web: INFO
-    guru.springframework.controllers: INFO
-    org.hibernate: INFO
  
+    kafka:
+      streams:
+      properties[default.key.serde] : org.apache.kafka.common.serialization.Serde
  # config:
  #   import: optional:configserver:http://myconfigserver.com
 

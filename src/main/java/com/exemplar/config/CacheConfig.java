@@ -1,26 +1,27 @@
 package com.exemplar.config;
 
-import java.awt.print.Book;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 
+import com.exemplar.cache.RedisMessageSubscriber;
+import com.exemplar.entity.Item;
+
 @Configuration
-@EnableRedisRepositories
+@EnableRedisRepositories(basePackages = "com.exemplar.cache")
 public class CacheConfig {
 	
 	@Bean
@@ -44,20 +45,35 @@ public class CacheConfig {
 	    return new LettuceConnectionFactory(configuration);
 	  }
 	
-	@Bean
-	public RedisTemplate<Long, Book> redisTemplate(RedisConnectionFactory connectionFactory) {
-	    RedisTemplate<Long, Book> template = new RedisTemplate<>();
-	    template.setConnectionFactory(connectionFactory);
-	    // Add some specific configuration here. Key serializers, etc.
-	    /*
-	    template.opsForValue().set(null, null);
-	    template.delete(120L);
-	    template.opsForValue().get(120L);
-	    */
-	    return template;
+	@Bean("itemCacheTemplate")
+	public RedisTemplate<Long, Item> redisItemTemplate(RedisConnectionFactory connectionFactory) {
+	    RedisTemplate<Long, Item> redisItemTemplate = new RedisTemplate<>();
+	    redisItemTemplate.setConnectionFactory(connectionFactory);
+	    
+	    //redisItemTemplate.setKeySerializer(null);
+	    //redisItemTemplate.setValueSerializer(null);
+	  
+	    return redisItemTemplate;
 	}
 	
+	@Bean
+	ChannelTopic topic() {
+	    return new ChannelTopic("messageQueue");
+	}
+	
+	@Bean
+	MessageListenerAdapter messageListener() { 
+	    return new MessageListenerAdapter(new RedisMessageSubscriber());
+	}
 
+	@Bean
+	RedisMessageListenerContainer redisContainer() {
+	    RedisMessageListenerContainer container 
+	      = new RedisMessageListenerContainer(); 
+	    container.setConnectionFactory(redisConnectionFactory()); 
+	    container.addMessageListener(messageListener(), topic()); 
+	    return container; 
+	}
 
 	
 	//@Bean
@@ -68,5 +84,21 @@ public class CacheConfig {
 	      .withCacheConfiguration("customerCache",
 	        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5)));
 	}
+	
+	/*
+	@Configuration
+	public class RedisDistributedLockConfiguration {
+	    private static final String LOCK_REGISTRY_REDIS_KEY = "MY_REDIS_KEY";
+	    private  final Duration RELEASE_TIME_DURATION = Duration.ofSeconds(30);
+
+	    @Bean
+	    public ExpirableLockRegistry lockRegistry(RedisConnectionFactory redisConnectionFactory) {
+	        RedisLockRegistry redisLockRegistry =
+	            new RedisLockRegistry(redisConnectionFactory, LOCK_REGISTRY_REDIS_KEY,
+	                RELEASE_TIME_DURATION.toMillis());
+	        return redisLockRegistry;
+	    }
+	}
+	*/
 
 }

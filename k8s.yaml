@@ -5,15 +5,16 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: nucleus
-  replicas: 1 # tells deployment to run 2 pods matching the template
+      app: java-api
+  replicas: 2 # tells deployment to run 2 pods matching the template
   template:
     metadata:
       labels:
-        app: nucleus
+        app: java-api
     spec:
       containers:
-      - name: nucleus-ui
-        image: nucleus-ui:latest
+      - name: java-api
+        image: java-api:latest
         ports:
         - containerPort: 2023
+ 

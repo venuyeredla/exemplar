@@ -1,16 +1,25 @@
 package com.exemplar.entity;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "item")
-public class Item {
+@Table(name = "ecom_item")
+public class Item implements Serializable{
 	
 	
-    @Id
+    private static final long serialVersionUID = 1L;
+	@Id
     @GeneratedValue
     private Long id;
     private Long balance;
@@ -29,5 +38,12 @@ public class Item {
 		this.balance = balance;
 	}
 
+    @CreationTimestamp
+    @Column(updatable = false, name = "created_at")
+    private Date createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
 }

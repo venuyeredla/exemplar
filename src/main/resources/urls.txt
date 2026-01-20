@@ -1,7 +1,0 @@
-
-
-http://localhost:2024/app/v1/user/abadfaf
-
-docker pull redis:7.4.0-alpine
-
-docker run --name local-redis -p 6379:6379 -d redis:7.4.0-alpine

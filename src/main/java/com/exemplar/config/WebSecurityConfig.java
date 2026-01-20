@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,28 +23,13 @@ public class WebSecurityConfig {
 	
 	   private static final String[] WHITE_LIST_URL = {
 			   "/",
-			   "/unauthorized",
+			   "/health",
 			   "/v1/auth/**",
-			   "/v1/user/**",
-			   
-	            "/v2/api-docs",
-	            "/v3/api-docs",
-	            "/v3/api-docs/**",
-	            "/swagger-resources",
-	            "/swagger-resources/**",
-	            "/configuration/ui",
-	            "/configuration/security",
-	            "/swagger-ui/**",
-	            "/webjars/**",
-	            "/swagger-ui.html"};
-	
-
-	private final AuthenticationProvider authenticationProvider;
+			   };
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-	public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider,JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
-		this.authenticationProvider = authenticationProvider;
+	public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
 		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
 		this.jwtAuthenticationEntryPoint=jwtAuthenticationEntryPoint;
 	}
@@ -54,23 +38,23 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf(csrf ->{
 			csrf
-			.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).disable();
-		}).headers(headers->{
-			headers.frameOptions().disable();
-		})
-					.authorizeHttpRequests(auth -> 
-							auth.requestMatchers(WHITE_LIST_URL).permitAll()
+			.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/v1//auth/**")).disable();})
+		.headers(headers->{
+			headers.frameOptions().disable();	
+			})
+		.authorizeHttpRequests(auth -> 
+				auth.requestMatchers(WHITE_LIST_URL).permitAll()
 							.anyRequest().authenticated()
-						)
-					.exceptionHandling(exceptionHandler ->{
+				)
+		  .exceptionHandling(exceptionHandler ->{
 						//exceptionHandler.accessDeniedPage("/unauthorized");
 						//exceptionHandler.accessDeniedHandler(null);
 					    exceptionHandler.authenticationEntryPoint(jwtAuthenticationEntryPoint);
-					})
-					
-					.sessionManagement(sessManage -> sessManage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			})
+		  .sessionManagement(sessManage -> sessManage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		  .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);		  
 					//.authenticationProvider(authenticationProvider)
-					.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+					//.addFilterBefore(, UsernamePasswordAuthenticationFilter.class);
 				
 			      /*  .logout.logoutUrl("/auth/logout")
 			        .logout(logout ->

@@ -1,0 +1,42 @@
+
+
+http://localhost:2024/app/v1/user/abadfaf
+
+docker pull redis:7.4.0-alpine
+
+docker run --name local-redis -p 6379:6379 -d redis:7.4.0-alpine
+
+
+
+docker pull apache/kafka
+
+docker run --name local-kafka  -p 9092;9092 -d  apache/kafka:latest
+
+
+docker exec --workdir /opt/kafka/bin/ -it local-kafka sh
+
+./kafka-topics.sh --describe --topic ecomtopic --bootstrap-server localhost:9092
+
+
+
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ecomtopic --from-beginning
+
+Ecompwd#24
+
+docker run -it -p 9200:9200 -p 9600:9600 -e OPENSEARCH_INITIAL_ADMIN_PASSWORD=Ecompwd#24 "discovery.type=single-node"  --name opensearch-node  -d opensearchproject/opensearch:latest
+
+docker stop  opensearch-node
+
+docker start  opensearch-node
+
+docker pull opensearchproject/opensearch-dashboards:latest
+
+docker run --name dashboard -p 5601:5601 -d  opensearchproject/opensearch-dashboards
+
+
+curl -X GET "https://localhost:9200" -ku admin:Ecompwd#24
+curl -X GET "https://localhost:9200/_cat/nodes?v" -ku admin:Ecompwd#24
+curl -X GET "https://localhost:9200/_cat/plugins?v" -ku admin:Ecompwd#24
+
+
+openssl s_client -connect localhost:9200 | openssl x509 > opensearch.cert

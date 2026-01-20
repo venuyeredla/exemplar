@@ -1,4 +1,4 @@
-package com.exemplar.dto;
+package com.exemplar.config.security;
 
 import java.io.Serializable;
 
